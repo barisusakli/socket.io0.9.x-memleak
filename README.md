@@ -13,4 +13,4 @@ browse to `http://localhost:4568`
 
 watch memory usage on console or top
 
-
+a heapdump will be saved at app start and every 30 seconds 
