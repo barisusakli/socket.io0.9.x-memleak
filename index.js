@@ -47,15 +47,15 @@ if( cluster.isMaster ){
 
   },1000 * 10);
 } else {
-	var app = express();
+  var app = express();
 
-	var server = http.createServer( app );
+  var server = http.createServer( app );
 
-	var io = socketio.listen( server, {log:false} );
-	io.configure( function(){
-		io.enable('browser client minification');
-		io.enable('browser client gzip');
-	});
+  var io = socketio.listen( server, {log:false} );
+  io.configure( function(){
+    io.enable('browser client minification');
+    io.enable('browser client gzip');
+  });
 
   app.configure(function(){
       app.use( '/static', express.static( path.normalize( path.join( __dirname, "static" ) ) ) );
@@ -73,32 +73,30 @@ if( cluster.isMaster ){
       app.set('view options', {
         layout: false
       });
-	})
+  });
 
-	swig.setDefaults({
-		root:path.resolve('./views')
-		,allowErrors: true
-	});
+  swig.setDefaults({
+    root:path.resolve('./views')
+    ,allowErrors: true
+  });
 
-	app.get('/', function( req, res ){
-		res.render('index.swig');
-	});
+  app.get('/', function( req, res ){
+    res.render('index.swig');
+  });
 
-	app.post('/', function( req, res ){
-		io.sockets.in('test').emit('message', req.body);
-		req.body = null;
-		return res.json({success:1});
-	});
+  app.post('/', function( req, res ){
+    io.sockets.in('test').emit('message', req.body);
+    req.body = null;
+    return res.json({success:1});
+  });
 
-	io.on('connection', function( socket ){
-		console.log("joining test");
-		socket.join('test');
-		socket.on('sigterm', function(){
-			socket.leave( 'test' );
-		});
-	});
-
-  console.log(cluster.worker.id);
+  io.on('connection', function( socket ){
+    console.log("joining test");
+    socket.join('test');
+    socket.on('sigterm', function(){
+      socket.leave( 'test' );
+    });
+  });
 
   if (cluster.worker.id === 1) {
     console.log('writing heap ' + process.pid, cluster.worker.id);
