@@ -8,6 +8,9 @@ Based on http://runnable.com/UtYiumRuJT8sAABz/socket-io-memory-leak-for-express-
 
 
 start with `node index.js`
+
 browse to `http://localhost:4567`
+
 watch memory usage on console or top
+
 
